@@ -12,8 +12,8 @@ env:
 
 # List all supporting files needed by your script
 configurationFiles:
-  - "utils/"
-  - "envs/prod.env"
-  - "envs/stg.env"
-  - "requirements.txt"    # ALT will auto-install these
-  - "tests/"
+  - utils/
+  - envs/prod.env
+  - envs/stg.env
+  - requirements.txt    # ALT will auto-install these
+  - tests/
