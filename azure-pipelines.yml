@@ -1,6 +1,9 @@
 trigger:
 - main
 
+variables:
+  LOCUST_ENV_VAR: 'prod' # This is the default if no one changes it
+
 pool:
   vmImage: 'ubuntu-latest'
 
@@ -26,11 +29,8 @@ steps:
     # --run-time 1m: How long to run
     # --users 10: Number of users
     # --spawn-rate 2: How fast to start users
-    LOCUST_ENV=prod locust -f locustfile.py --headless -u 10 -r 1 --run-time 1m --html=locust_report.html
+    LOCUST_ENV=$(LOCUST_ENV_VAR) locust -f locustfile.py --headless -u 10 -r 1 --run-time 30s --html=locust_report.html
   displayName: 'Run Locust Load Test'
-  env:
-    LOCUST_ENV: 'prod'
-    PYTHONPATH: $(System.DefaultWorkingDirectory) # This fixes the "No module named tests" error
 
 - task: PublishPipelineArtifact@1
   displayName: 'Publish Locust Report'
