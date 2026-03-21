@@ -2,7 +2,8 @@ trigger:
 - main
 
 variables:
-  LOCUST_ENV_VAR: 'prod' # This is the default if no one changes it
+  name: LOCUST_ENV_VAR
+  value: prod # This is the default if no one changes it
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -21,16 +22,23 @@ steps:
   displayName: 'Install Dependencies'
 
 - script: |
-    echo "--- Current Directory Structure ---"
-    ls -R
-    
-    echo "--- Starting Locust Load Test ---"
+    #echo "--- Current Directory Structure ---"
+    #ls -R
     # Running in headless mode for 1 minute as an example
     # --run-time 1m: How long to run
     # --users 10: Number of users
     # --spawn-rate 2: How fast to start users
-    LOCUST_ENV=$(LOCUST_ENV_VAR) locust -f locustfile.py --headless -u 10 -r 1 --run-time 30s --html=locust_report.html
-  displayName: 'Run Locust Load Test'
+    
+    echo "--- Starting Locust Load Test ---"
+    echo "Variable name: $(name)"
+    echo "Variable value: $(LOCUST_ENV_VAR)"
+    echo "Confirmed Target Environment: $LOCUST_ENV_VAR"
+    
+    # 2. Export it so Python's os.getenv('LOCUST_ENV') can see it
+    export LOCUST_ENV=$LOCUST_ENV_VAR
+    locust -f locustfile.py --headless -u 10 -r 1 --run-time 10s --html=locust_report.html
+  displayName: 'Running Locust Load Test in $(LOCUST_ENV_VAR) Environment'
+  
 
 - task: PublishPipelineArtifact@1
   displayName: 'Publish Locust Report'
