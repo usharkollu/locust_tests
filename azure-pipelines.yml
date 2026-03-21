@@ -29,7 +29,7 @@ steps:
     # --run-time 1m: How long to run
     # --users 10: Number of users
     # --spawn-rate 2: How fast to start users
-    LOCUST_ENV=$(LOCUST_ENV_VAR) locust -f locustfile.py --headless -u 10 -r 1 --run-time 30s --html=locust_report.html
+    LOCUST_ENV=$LOCUST_ENV_VAR locust -f locustfile.py --headless -u 10 -r 1 --run-time 30s --html=locust_report.html
   displayName: 'Run Locust Load Test'
 
 - task: PublishPipelineArtifact@1
