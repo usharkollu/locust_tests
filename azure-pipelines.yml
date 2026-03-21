@@ -1,0 +1,30 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- checkout: self
+
+- task: AzureLoadTest@1
+  inputs:
+    azureSubscription: 'YourServiceConnectionName' # The ARM service connection name
+    loadTestConfigFile: 'loadtest.config.yml'
+    resourceGroup: 'YourResourceGroupName'
+    loadTestResource: 'YourLoadTestingResourceName'
+    # Optional: Override LOCUST_ENV here if needed for different stages
+    env: |
+      [
+        {
+          "name": "LOCUST_ENV",
+          "value": "prod"
+        }
+      ]
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(System.DefaultWorkingDirectory)/loadTest'
+    artifact: 'LoadTestResults'
+    publishLocation: 'pipeline'
+  condition: always()

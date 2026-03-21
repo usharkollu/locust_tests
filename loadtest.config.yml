@@ -1,0 +1,19 @@
+version: v0.1
+testId: "locust-api-test"
+displayName: "Locust Performance Test"
+testType: Locust
+testPlan: "locustfile.py"  # Your main entry point
+engineInstances: 1        # Number of parallel test engines
+
+# Environment variables for your config_loader
+env:
+  - name: LOCUST_ENV
+    value: "prod"
+
+# List all supporting files needed by your script
+configurationFiles:
+  - "utils/base.py"
+  - "utils/config_loader.py"
+  - "envs/prod.env"
+  - "envs/stg.env"
+  - "requirements.txt"    # ALT will auto-install these
