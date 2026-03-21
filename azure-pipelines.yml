@@ -37,6 +37,8 @@ steps:
     export LOCUST_ENV=$MY_ENV
     locust -f locustfile.py --headless -u 10 -r 1 --run-time 10s --html=locust_report.html
   displayName: 'Run Locust Load Test'
+  env:
+    LOCUST_ENV_VAR: $(LOCUST_ENV_VAR)  # This maps the Pipeline variable to the Script environment
 
 - task: PublishPipelineArtifact@1
   displayName: 'Publish Locust Report'
