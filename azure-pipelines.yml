@@ -35,7 +35,7 @@ steps:
 - task: PublishPipelineArtifact@1
   displayName: 'Publish Locust Report'
   inputs:
-    targetPath: '$(System.DefaultWorkingDirectory)'
+    targetPath: '$(System.DefaultWorkingDirectory)/locust_report.html'
     artifact: 'LocustReport'
     publishLocation: 'pipeline'
   condition: always()
