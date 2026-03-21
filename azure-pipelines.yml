@@ -22,19 +22,20 @@ steps:
     ls -R
     
     echo "--- Starting Locust Load Test ---"
-    # Running in headless mode for 2 minutes as an example
-    # --run-time 2m: How long to run
+    # Running in headless mode for 1 minute as an example
+    # --run-time 1m: How long to run
     # --users 10: Number of users
     # --spawn-rate 2: How fast to start users
-    locust -f locustfile.py --headless --users 10 --spawn-rate 2 --run-time 2m --host https://your-target-app.com
+    LOCUST_ENV=prod locust -f locustfile.py --headless -u 10 -r 1 --run-time 5s
   displayName: 'Run Locust Load Test'
   env:
     LOCUST_ENV: 'prod'
     PYTHONPATH: $(System.DefaultWorkingDirectory) # This fixes the "No module named tests" error
 
 - task: PublishPipelineArtifact@1
+  displayName: 'Publish Locust Report'
   inputs:
     targetPath: '$(System.DefaultWorkingDirectory)'
-    artifact: 'LocustFiles'
+    artifact: 'LocustReport'
     publishLocation: 'pipeline'
   condition: always()
