@@ -29,12 +29,10 @@ steps:
     # --spawn-rate 2: How fast to start users
     
     echo "--- Starting Locust Load Test ---"
-    # 1. Force the Azure variable into a local Shell variable
-    MY_ENV="$(LOCUST_ENV_VAR)"
-    echo "Confirmed Environment: $MY_ENV"
+    echo "Confirmed Target Environment: $LOCUST_ENV_VAR"
     
     # 2. Export it so Python's os.getenv('LOCUST_ENV') can see it
-    export LOCUST_ENV=$MY_ENV
+    export LOCUST_ENV=$LOCUST_ENV_VAR
     locust -f locustfile.py --headless -u 10 -r 1 --run-time 10s --html=locust_report.html
   displayName: 'Run Locust Load Test'
   env:
