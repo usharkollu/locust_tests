@@ -1,5 +1,5 @@
 trigger:
-- master
+- main
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -7,24 +7,35 @@ pool:
 steps:
 - checkout: self
 
-- task: AzureLoadTest@1
+- task: UsePythonVersion@0
   inputs:
-    azureSubscription: 'Azure-Load-Test-Conn' # The ARM service connection name
-    loadTestConfigFile: 'loadtest.config.yml'
-    resourceGroup: 'LoadResource'
-    loadTestResource: 'locust-demo-service'
-    # Optional: Override LOCUST_ENV here if needed for different stages
-    env: |
-      [
-        {
-          "name": "LOCUST_ENV",
-          "value": "prod"
-        }
-      ]
+    versionSpec: '3.9'
+
+- script: |
+    python -m pip install --upgrade pip
+    pip install -r requirements.txt
+    pip install locust  # Ensuring locust is present
+  displayName: 'Install Dependencies'
+
+- script: |
+    echo "--- Current Directory Structure ---"
+    ls -R
+    
+    echo "--- Starting Locust Load Test ---"
+    # Running in headless mode for 1 minute as an example
+    # --run-time 1m: How long to run
+    # --users 10: Number of users
+    # --spawn-rate 2: How fast to start users
+    LOCUST_ENV=prod locust -f locustfile.py --headless -u 10 -r 1 --run-time 1m --html=locust_report.html
+  displayName: 'Run Locust Load Test'
+  env:
+    LOCUST_ENV: 'prod'
+    PYTHONPATH: $(System.DefaultWorkingDirectory) # This fixes the "No module named tests" error
 
 - task: PublishPipelineArtifact@1
+  displayName: 'Publish Locust Report'
   inputs:
-    targetPath: '$(System.DefaultWorkingDirectory)/loadTest'
-    artifact: 'LoadTestResults'
+    targetPath: '$(System.DefaultWorkingDirectory)/locust_report.html'
+    artifact: 'LocustReport'
     publishLocation: 'pipeline'
   condition: always()

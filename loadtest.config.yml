@@ -12,9 +12,11 @@ env:
 
 # List all supporting files needed by your script
 configurationFiles:
-  - "utils/base.py"
-  - "utils/config_loader.py"
-  - "envs/prod.env"
-  - "envs/stg.env"
-  - "requirements.txt"    # ALT will auto-install these
-  - "tests/get_AllBookingIds.py"
+  - base_config.yml
+  - config_loader.py
+  - __init__.py
+  - prod.env
+  - stg.env
+  - requirements.txt    # ALT will auto-install these
+  - get_AllBookingIds.py
+ 

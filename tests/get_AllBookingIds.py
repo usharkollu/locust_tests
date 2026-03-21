@@ -7,9 +7,17 @@ class GetAllBookingIds(TaskSet):
     @task
     @tag('smoke')
     def get_all_bookings(self):
-        response = self.client.get("/booking",catch_response=True)
-        print(response.status_code)
-        #print(response)
-        value=response.json()
-        bookingIds=[value['bookingid'] for value in value]
-        print(bookingIds)
+        # Using 'with' + 'catch_response' is the best practice for custom error handling
+        with self.client.get("/booking", catch_response=True) as response:
+            if response.status_code == 200:
+                try:
+                    data = response.json()
+                    # Safe list comprehension
+                    bookingIds = [item['bookingid'] for item in data if 'bookingid' in item]
+                    print(f"Success: Found {len(bookingIds)} bookings")
+                    response.success() 
+                except Exception as e:
+                    response.failure(f"JSON Parsing failed: {str(e)}")
+            else:
+                # This ensures the status code (e.g., 404, 500) shows up in your HTML report
+                response.failure(f"Failed with status code: {response.status_code}")
