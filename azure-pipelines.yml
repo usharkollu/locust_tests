@@ -9,10 +9,10 @@ steps:
 
 - task: AzureLoadTest@1
   inputs:
-    azureSubscription: 'YourServiceConnectionName' # The ARM service connection name
+    azureSubscription: 'Azure-Load-Test-Conn' # The ARM service connection name
     loadTestConfigFile: 'loadtest.config.yml'
-    resourceGroup: 'YourResourceGroupName'
-    loadTestResource: 'YourLoadTestingResourceName'
+    resourceGroup: 'LoadResource'
+    loadTestResource: 'locust-demo-service'
     # Optional: Override LOCUST_ENV here if needed for different stages
     env: |
       [
