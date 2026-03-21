@@ -1,0 +1,36 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- checkout: self
+- script: |
+    echo "--- Current Directory ---"
+    pwd
+    echo "--- File Structure ---"
+    find . -maxdepth 2 -not -path '*/.*'
+  displayName: 'Debug Folder Structure'
+  
+- task: AzureLoadTest@1
+  inputs:
+    azureSubscription: 'Azure-Load-Test-Conn' # The ARM service connection name
+    loadTestConfigFile: 'loadtest.config.yml'
+    resourceGroup: 'LoadResource'
+    loadTestResource: 'locust-demo-service'
+    # Optional: Override LOCUST_ENV here if needed for different stages
+    env: |
+      [
+        {
+          "name": "LOCUST_ENV",
+          "value": "prod"
+        }
+      ]
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(System.DefaultWorkingDirectory)/loadTest'
+    artifact: 'LoadTestResults'
+    publishLocation: 'pipeline'
+  condition: always()
