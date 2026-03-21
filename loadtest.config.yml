@@ -17,3 +17,4 @@ configurationFiles:
   - "envs/prod.env"
   - "envs/stg.env"
   - "requirements.txt"    # ALT will auto-install these
+  - "tests/" # Include all test files in the tests directory
