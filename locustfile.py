@@ -1,20 +1,19 @@
 import sys
 import os
-
-# This line is mandatory for Azure to 'see' the uploaded files
+# This must stay at the top
 sys.path.append(os.getcwd())
 
+from locust import between  
+
 try:
-    # 1. Try importing via the folder (Standard way)
     from tests.get_AllBookingIds import GetAllBookingIds
     from utils.config_loader import ConfigLoader
+    from utils.base import BaseUser # <--- IMPORT YOUR BASE CLASS HERE
 except ImportError:
-    # 2. Try importing directly (The 'Flattened' way Azure often uses)
     from get_AllBookingIds import GetAllBookingIds
     from config_loader import ConfigLoader
+    from base import BaseUser # <--- FALLBACK FOR FLATTENED FILES
 
 class MyTests(BaseUser):
     wait_time = between(1, 5)
     tasks = [GetAllBookingIds]
-
-
