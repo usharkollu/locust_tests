@@ -1,4 +1,4 @@
-🚀 Locust Performance Testing Suite
+## 🚀 Locust Performance Testing Suite
 This repository contains a professional-grade load testing framework using Locust, fully integrated into Azure DevOps CI/CD. It provides a scalable way to execute performance tests, manage multiple environments, and visualize results through automated reporting.
 
 ## 🌟 Project Achievements
