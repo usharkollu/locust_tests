@@ -23,14 +23,16 @@ steps:
 - script: |
     #echo "--- Current Directory Structure ---"
     #ls -R
-    
-    echo "--- Starting Locust Load Test ---"
-    echo "Target Environment: $LOCUST_ENV_VAR"
     # Running in headless mode for 1 minute as an example
     # --run-time 1m: How long to run
     # --users 10: Number of users
     # --spawn-rate 2: How fast to start users
-    LOCUST_ENV=$LOCUST_ENV_VAR locust -f locustfile.py --headless -u 10 -r 1 --run-time 10s --html=locust_report.html
+    
+    echo "--- Starting Locust Load Test ---"
+    echo "Target Environment: $LOCUST_ENV_VAR"
+    # Export it so Locust/Python can read it via os.getenv
+    export LOCUST_ENV=$LOCUST_ENV_VAR # this will be picked up by config_loader.py
+    locust -f locustfile.py --headless -u 10 -r 1 --run-time 10s --html=locust_report.html
   displayName: 'Run Locust Load Test'
 
 - task: PublishPipelineArtifact@1
