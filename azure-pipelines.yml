@@ -21,10 +21,11 @@ steps:
   displayName: 'Install Dependencies'
 
 - script: |
-    echo "--- Current Directory Structure ---"
-    ls -R
+    #echo "--- Current Directory Structure ---"
+    #ls -R
     
     echo "--- Starting Locust Load Test ---"
+    echo "Target Environment: $LOCUST_ENV_VAR"
     # Running in headless mode for 1 minute as an example
     # --run-time 1m: How long to run
     # --users 10: Number of users
