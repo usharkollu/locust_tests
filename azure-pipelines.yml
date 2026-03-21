@@ -1,12 +1,18 @@
 trigger:
-- master
+- main
 
 pool:
   vmImage: 'ubuntu-latest'
 
 steps:
 - checkout: self
-
+- script: |
+    echo "--- Current Directory ---"
+    pwd
+    echo "--- File Structure ---"
+    find . -maxdepth 2 -not -path '*/.*'
+  displayName: 'Debug Folder Structure'
+  
 - task: AzureLoadTest@1
   inputs:
     azureSubscription: 'Azure-Load-Test-Conn' # The ARM service connection name
