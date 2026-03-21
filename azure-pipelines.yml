@@ -9,7 +9,7 @@ steps:
 
 - task: AzureLoadTest@1
   inputs:
-    azureSubscription: 'locust-demo-service' # The ARM service connection name
+    azureSubscription: 'usharkollu' # The ARM service connection name
     loadTestConfigFile: 'loadtest.config.yml'
     resourceGroup: 'LoadResource'
     loadTestResource: 'locust-demo-service'
